@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#This is scripte to check if the specific port/service are open/start
 # 1. Prompt～
 echo "Now, the services of your Linux system will be detect!"
 echo -e "The www, ftp, ssh, and mail will be detect! \n"
