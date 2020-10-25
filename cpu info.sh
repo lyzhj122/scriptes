@@ -3,10 +3,10 @@
 #this script only works in a Linux system which has one or more identical physical CPU(s).
 
 echo -n "logical CPU number in total: "
-#Âß¼­CPU¸öÊı
+#é€»è¾‘CPUä¸ªæ•°
 cat /proc/cpuinfo | grep "processor" | wc -l
 
-#ÓĞĞ©ÏµÍ³Ã»ÓĞ¶àºËÒ²Ã»ÓĞ´ò¿ª³¬Ïß³Ì£¬¾ÍÖ±½ÓÍË³ö½Å±¾
+#æœ‰äº›ç³»ç»Ÿæ²¡æœ‰å¤šæ ¸ä¹Ÿæ²¡æœ‰æ‰“å¼€è¶…çº¿ç¨‹ï¼Œå°±ç›´æ¥é€€å‡ºè„šæœ¬
 cat /proc/cpuinfo | grep -qi "core id"
 if [ $? -ne 0 ]; then
     echo "Warning. No multi-core or hyper-threading is enabled."
@@ -14,21 +14,21 @@ if [ $? -ne 0 ]; then
 fi
 
 echo -n "physical CPU number in total: "
-#ÎïÀíCPU¸öÊı
+#ç‰©ç†CPUä¸ªæ•°
 cat /proc/cpuinfo | grep "physical id" | sort | uniq | wc -l
 
 echo -n "core number in a physical CPU: "
-#Ã¿¸öÎïÀíCPUÉÏcoreµÄ¸öÊı(Î´¼ÆÈë³¬Ïß³Ì)
+#æ¯ä¸ªç‰©ç†CPUä¸Šcoreçš„ä¸ªæ•°(æœªè®¡å…¥è¶…çº¿ç¨‹)
 core_per_phy_cpu=$(cat /proc/cpuinfo | grep "core id" | sort | uniq | wc -l)
 echo $core_per_phy_cpu
 echo -n "logical CPU number in a physical CPU: "
-#Ã¿¸öÎïÀíCPUÖĞÂß¼­CPU(¿ÉÄÜÊÇcore¡¢threads»òboth)µÄ¸öÊı
-logical_cpu_per_phy_cpu=$(cat /proc/cpuinfo | grep "siblings" | sort | uniq | awk- F: '{print $2}')
+#æ¯ä¸ªç‰©ç†CPUä¸­é€»è¾‘CPU(å¯èƒ½æ˜¯coreã€threadsæˆ–both)çš„ä¸ªæ•°
+logical_cpu_per_phy_cpu=$(cat /proc/cpuinfo | grep "siblings" | sort | uniq | awk -F: '{print $2}')
 echo $logical_cpu_per_phy_cpu
 
-#ÊÇ·ñ´ò¿ª³¬Ïß³Ì£¬ÒÔ¼°Ã¿¸öcoreÉÏµÄ³¬Ïß³ÌÊıÄ¿
-#Èç¹ûÔÚÍ¬Ò»¸öÎïÀíCPUÉÏµÄÁ½¸öÂß¼­CPU¾ßÓĞÏàÍ¬µÄ¡±core id¡±£¬ÄÇÃ´³¬Ïß³ÌÊÇ´ò¿ªµÄ
-#´Ë´¦¸ù¾İÇ°Ãæ¼ÆËãµÄcore_per_phy_cpuºÍlogical_core_per_phy_cpuµÄ±È½ÏÀ´²é¿´³¬Ïß³Ì
+#æ˜¯å¦æ‰“å¼€è¶…çº¿ç¨‹ï¼Œä»¥åŠæ¯ä¸ªcoreä¸Šçš„è¶…çº¿ç¨‹æ•°ç›®
+#å¦‚æœåœ¨åŒä¸€ä¸ªç‰©ç†CPUä¸Šçš„ä¸¤ä¸ªé€»è¾‘CPUå…·æœ‰ç›¸åŒçš„â€core idâ€ï¼Œé‚£ä¹ˆè¶…çº¿ç¨‹æ˜¯æ‰“å¼€çš„
+#æ­¤å¤„æ ¹æ®å‰é¢è®¡ç®—çš„core_per_phy_cpuå’Œlogical_core_per_phy_cpuçš„æ¯”è¾ƒæ¥æŸ¥çœ‹è¶…çº¿ç¨‹
 if [ $logical_cpu_per_phy_cpu -gt $core_per_phy_cpu ]; then
     echo "Hyper threading is enabled. Each core has $(expr $logical_cpu_per_phy_cpu / $core_per_phy_cpu ) threads."
 elif [ $logical_cpu_per_phy_cpu -eq $core_per_phy_cpu ]; then
